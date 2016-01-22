@@ -5,7 +5,9 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import sun.swing.ImageIconUIResource;
 
 /*
 1º modo array con varias palabras
@@ -23,52 +25,50 @@ public class VentanaAhorcado2 extends javax.swing.JFrame {
     int numeroFalllos = 0; 
     public VentanaAhorcado2() {
         initComponents();
-        
+        cambiaImagenAhorcado();
         //aqui ca el codigo que poniamos en el run en ACM
     }
-
-    @Override
-    public void paint(Graphics g){
-        super.paint(g);
+    
+    private void cambiaImagenAhorcado(){
+        String nombreImagen = "";
         
-        //con esto ndicamos que vamos a dibujar en el panel 
-        g = jPanel1.getGraphics();
-        Image miImagen = null;
-        try {
-            //cargamos una imagen
-            switch(numeroFalllos){
+        switch(numeroFalllos){
                 case 0:
-                 miImagen = ImageIO.read(getClass().getResource("/ahorcado_0.png"));
+                 nombreImagen = "/ahorcado_0.png";
                  break;
                  case 1:
-                 miImagen = ImageIO.read(getClass().getResource("/ahorcado_1.png"));
+                 nombreImagen = "/ahorcado_1.png";
                  break;
                  case 2:
-                 miImagen = ImageIO.read(getClass().getResource("/ahorcado_2.png"));
+                 nombreImagen = "/ahorcado_2.png";
                  break;
                  case 3:
-                 miImagen = ImageIO.read(getClass().getResource("/ahorcado_3.png"));
+                 nombreImagen = "/ahorcado_3.png";
                  break;
                  case 4:
-                 miImagen = ImageIO.read(getClass().getResource("/ahorcado_4.png"));
+                 nombreImagen = "/ahorcado_4.png";
                  break;
                  case 5:
-                 miImagen = ImageIO.read(getClass().getResource("/ahorcado_5.png"));
+                 nombreImagen = "/ahorcado_5.png";
                  break;
                 case 6:
-                 miImagen = ImageIO.read(getClass().getResource("/ahorcado_fin.png"));
+                 nombreImagen = "/ahorcado_fin.png";
                  break;
-                case -1:
-                    miImagen = ImageIO.read(getClass().getResource("/acertasteTodo.png"));
+                case -100:
+                    nombreImagen = "/acertasteTodo.png";
                  break;
-                default : miImagen = ImageIO.read(getClass().getResource("/ahorcado_fin.png"));
+                default : nombreImagen = "/ahorcado_fin.png";
             }
-             
-        } catch (IOException ex) {
-            Logger.getLogger(VentanaAhorcado2.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        g.drawImage(miImagen, 0, 0, jPanel1.getWidth(), jPanel1.getHeight(),null);
+        ImageIcon imagen = new ImageIcon(getClass().getResource(nombreImagen));
+        // despues del switch tendremos el nombreImagen el nombre correcto de la imagen que tenemos que mostrar dependiendo del numero de fallos 
+       Image auxiliar = imagen.getImage().getScaledInstance(jLabel2.getWidth(),jLabel2.getHeight() , Image.SCALE_DEFAULT);
+       ImageIcon imageIcon = new ImageIcon(auxiliar);
+        jLabel2.setIcon(imageIcon);
+        
+        
     }
+
+
   
     private void chequeaLetra(JButton boton){
         if(boton.isEnabled()){
@@ -87,15 +87,15 @@ public class VentanaAhorcado2 extends javax.swing.JFrame {
            //si hay algun guion no hago nada porque no he advinado todavia la partida
            //si hay guiones, tengo que undicar de alguna forma que he agando al partida
            if (!palabraConGuiones.contains("_")){
-               numeroFalllos = -1;
+               numeroFalllos = -100;
                
            }
         } else {
             numeroFalllos++;
-            repaint();
+            
         }
         }
-       repaint(); 
+      cambiaImagenAhorcado(); 
     }
     
     
@@ -109,7 +109,6 @@ public class VentanaAhorcado2 extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        jPanel1 = new javax.swing.JPanel();
         q = new javax.swing.JButton();
         e = new javax.swing.JButton();
         r = new javax.swing.JButton();
@@ -138,6 +137,7 @@ public class VentanaAhorcado2 extends javax.swing.JFrame {
         A31 = new javax.swing.JButton();
         A32 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -146,19 +146,6 @@ public class VentanaAhorcado2 extends javax.swing.JFrame {
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("_ _ _ _ _ ");
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 30, 320, 91));
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 120, Short.MAX_VALUE)
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
-
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 10, 120, 100));
 
         q.setFont(new java.awt.Font("Tahoma", 1, 8)); // NOI18N
         q.setForeground(new java.awt.Color(102, 0, 255));
@@ -521,6 +508,7 @@ public class VentanaAhorcado2 extends javax.swing.JFrame {
         );
 
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 120, 470, 150));
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 10, 130, 100));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -696,7 +684,7 @@ public class VentanaAhorcado2 extends javax.swing.JFrame {
     private javax.swing.JButton A9;
     private javax.swing.JButton e;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JButton q;
     private javax.swing.JButton r;
