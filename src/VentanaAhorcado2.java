@@ -2,6 +2,7 @@
 import java.awt.Graphics;
 import java.awt.Image;
 import java.io.IOException;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -21,14 +22,32 @@ import sun.swing.ImageIconUIResource;
  */
 public class VentanaAhorcado2 extends javax.swing.JFrame {
     
-    String palabraOculta = "CETYS";
+    String palabraOculta = "";
     int numeroFalllos = 0; 
     public VentanaAhorcado2() {
         initComponents();
         cambiaImagenAhorcado();
+         eligePalabraOculta();
+         pintaGuionesEnLable();
+         System.out.println(palabraOculta);
         //aqui ca el codigo que poniamos en el run en ACM
     }
-    
+    private void eligePalabraOculta(){
+        String [] listaDePalabras = new String[5];
+        listaDePalabras[0] = "hola";
+        listaDePalabras[1] = "experto";
+        listaDePalabras[2] = "comer";
+        listaDePalabras[3] = "cenar";
+        listaDePalabras[4] = "perfecionar";
+        Random r = new Random();
+        palabraOculta = listaDePalabras[r.nextInt(5)];    
+    }
+    private void pintaGuionesEnLable(){
+        jLabel1.setText("");
+        for (int i=0; i<palabraOculta.length(); i++){
+       jLabel1.setText(jLabel1.getText()+ "_ ");
+    }
+    }
     private void cambiaImagenAhorcado(){
         String nombreImagen = "";
         
@@ -73,7 +92,7 @@ public class VentanaAhorcado2 extends javax.swing.JFrame {
     private void chequeaLetra(JButton boton){
         if(boton.isEnabled()){
         boton.setEnabled(false);
-        String letra = boton.getText();
+        String letra = boton.getText().toLowerCase();
         String palabraConGuiones = jLabel1.getText();
         if (palabraOculta.contains(letra)){
            for (int i=0; i < palabraOculta.length(); i++ ){
